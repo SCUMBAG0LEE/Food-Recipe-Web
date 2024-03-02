@@ -43,7 +43,7 @@ function find_Recipes() {
         })
         .catch(function() {
             main.innerHTML = `<div id="error1">
-                <p>Tidak ada resep yang cocok dengan pencarian Anda</p>
+                <p>There is no recipe match to your search</p>
             </div>`;
         })
 }

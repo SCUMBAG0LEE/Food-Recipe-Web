@@ -42,7 +42,6 @@ search_box.addEventListener("keyup", function () {
 search_box.addEventListener("keyup", find_Recipes);
 
 // Mengambil data dari API tergantung dari pencarian
-// Mengambil data dari API tergantung dari pencarian
 function find_Recipes() {
     let search_value = search_box.value;
 

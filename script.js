@@ -8,6 +8,7 @@ let fav_body = document.getElementById("fav_body");
 let heart = []; // Menyimpan referensi data dari ikon favorit
 let view = 0; // Total tampilan resep
 let btn_array = []; // Menyimpan array id dari resep yang diklik
+let loading = document.getElementById("loading"); // Get loading icon element
 
 // memeriksa apakah tidak ada nilai yang disimpan di local storage dengan kunci "meals_id_array".
 if (localStorage.getItem("meals_id_array") === null) {
@@ -23,25 +24,48 @@ function show_alert(text) {
     alert(text);
 }
 
+// perlihatkan semua data saat web baru dibuka
+find_Recipes();
+
+// event listener kotak pencarian
+search_box.addEventListener("keyup", function () {
+    // Toggle visibility of h3 based on search box value
+    if (search_box.value.trim() === "") {
+        document.getElementById("h3").style.display = "none";
+    } else {
+        document.getElementById("h3").style.display = "block";
+    }
+    find_Recipes();
+});
 
 // event listener kotak pencarian
 search_box.addEventListener("keyup", find_Recipes);
 
 // Mengambil data dari API tergantung dari pencarian
+// Mengambil data dari API tergantung dari pencarian
 function find_Recipes() {
     let search_value = search_box.value;
 
+    // Show loading icon
+    loading.style.display = "block";
+
     // Permintaan ke API untuk mencari resep
     fetch("https://www.themealdb.com/api/json/v1/1/search.php?s=" + search_value)
-        .then(function(response) {
+        .then(function (response) {
             return response.json(); // Mengembalikan dalam bentuk JSON
         })
-        .then(function(data) {
+        .then(function (data) {
+            // Hide loading icon
+            loading.style.display = "none";
+
             // Data disimpan dalam array
             object_array = data;
             render_cards(object_array);
         })
-        .catch(function() {
+        .catch(function () {
+            // Hide loading icon in case of error
+            loading.style.display = "none";
+
             main.innerHTML = `<div id="error1">
                 <p>There is no recipe match to your search</p>
             </div>`;

@@ -306,7 +306,7 @@ body {
 .Recipe_card {
     height: 80vh;
     width: 60vw;
-    background-color: rgb(234 187 174);;
+    background-image: url(assets/recipebackground.jpg);
     position: absolute;
     top: 15vh;
     left: 2.5vw;

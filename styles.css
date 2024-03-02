@@ -183,7 +183,20 @@ body {
     font-weight: bold;
     padding-left: 15px;
     padding-right: 10px;
+    background-color: black;
+    color: white;
+}
 
+#search_box::placeholder {
+    color: white; /* Changing the placeholder text color */
+}
+
+#search_box:hover {
+    background-color: rgb(43, 43, 43); /* Changing background color on hover */
+}
+
+#search_box:focus {
+    background-color: black; /* Changing background color on focus */
 }
 
 #h3 {

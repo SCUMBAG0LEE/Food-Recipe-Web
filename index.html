@@ -25,7 +25,7 @@
                 <source src="assets/bgm.mp3" type="audio/mpeg">
                 Your browser does not support the audio element.
             </audio>
-            
+
             <button id="home">
                 <a href="index.html">
                     <img id="logo1" src="assets/logo1.png" alt="Home">
@@ -40,10 +40,14 @@
             <header id="header">
                 <h1 id="h1">Find Recipes For You</h1>
                 <input id="search_box" type="search" placeholder="🔍 Search here.. ">
-                <h3 id="h3">Your Search Results:</h3>
+                <h3 id="h3" style="display: none;">Your Search Results:</h3>
+                <!-- Add a loading icon -->
+                <div id="loading" style="display: none; text-align: center; z-index: 999;">
+                    <img src="loading.gif" width="50%" alt="Loading...">
+                </div>
             </header>
 
-            <main id="main"> </main> 
+            <main id="main"> </main>
         </div>
     </div>
 

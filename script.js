@@ -10,6 +10,8 @@ let view = 0; // Total tampilan resep
 let btn_array = []; // Menyimpan array id dari resep yang diklik
 let loading = document.getElementById("loading"); // Get loading icon element
 
+document.getElementById("login_btn").addEventListener("click", function() {alert("Not Implemented Yet!");});
+
 // memeriksa apakah tidak ada nilai yang disimpan di local storage dengan kunci "meals_id_array".
 if (localStorage.getItem("meals_id_array") === null) {
     let meals_id = [];

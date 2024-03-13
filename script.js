@@ -10,8 +10,6 @@ let view = 0; // Total tampilan resep
 let btn_array = []; // Menyimpan array id dari resep yang diklik
 let loading = document.getElementById("loading"); // Get loading icon element
 
-document.getElementById("login_btn").addEventListener("click", function() {alert("Not Implemented Yet!");});
-
 // memeriksa apakah tidak ada nilai yang disimpan di local storage dengan kunci "meals_id_array".
 if (localStorage.getItem("meals_id_array") === null) {
     let meals_id = [];
@@ -347,3 +345,9 @@ function remove_from_fav(event) {
         element.style.color = "black";
     }
 }
+
+// Set audio on ...% 
+window.addEventListener('load', (event) => {
+    let audioPlayer = document.getElementById("audio-player");
+    audioPlayer.volume = 0.2;
+});

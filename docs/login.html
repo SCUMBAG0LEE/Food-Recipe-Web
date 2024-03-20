@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sword Art Online</title>
+  <link rel="shortcut icon" type="image/jpg" href="login/favicon.jpg">
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+  <link rel="stylesheet" href="login/style.css"> 
+</head>
+
+<body>
+  <div class="wrapper"></div>
+  <div id="mydiv">
+    <div id="mydivheader">Hold And Drag To Move</div>
+    <audio id="player" loop="false">
+      <source src="login/BGM.mp3" type="audio/mp3">
+    </audio>
+    <table border="1">
+      <tr>
+        <th>
+          <center>Your Dream Come True</center>
+          <button onclick="document.getElementById('player').play()"><img width="25px" height="25px" src="login/play.png"></button>
+          <button onclick="document.getElementById('player').pause()"><img width="25px" height="25px" src="login/pause.png"></button>
+        </th>
+      </tr>
+    </table>
+  </div>
+
+  <script type="text/javascript">
+dragElement(document.getElementById("mydiv"));
+
+function dragElement(elmnt) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  if (document.getElementById(elmnt.id + "header")) {
+    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+  } else {
+    elmnt.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+
+    // Get the container and draggable element
+    const container = document.querySelector('.wrapper');
+    const elmnt = document.getElementById("mydiv");
+
+    // Calculate the boundaries
+    const containerRect = container.getBoundingClientRect();
+    const elementRect = elmnt.getBoundingClientRect();
+
+    const maxLeft = containerRect.width - elementRect.width;
+    const maxTop = containerRect.height - elementRect.height;
+
+    // Calculate the new position
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+
+    let newLeft = elmnt.offsetLeft - pos1;
+    let newTop = elmnt.offsetTop - pos2;
+
+    // Restrict movement within the container
+    if (newLeft < 0) {
+      newLeft = 0;
+    } else if (newLeft > maxLeft) {
+      newLeft = maxLeft;
+    }
+
+    if (newTop < 0) {
+      newTop = 0;
+    } else if (newTop > maxTop) {
+      newTop = maxTop;
+    }
+
+    // Update the element's position
+    elmnt.style.top = newTop + "px";
+    elmnt.style.left = newLeft + "px";
+  }
+
+  function closeDragElement() {
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+</script>
+
+  <form method="post" action="">
+    <div class="cont"> 
+      <div class="form sign-in">
+        <h2>Welcome Back</h2>
+
+        <label>
+          <span>Username or Email</span>
+          <input type="text" name="username">
+        </label>
+
+        <label>
+          <span>Password</span>
+          <input type="password" name="password">
+        </label>
+
+        <p class="forgot-pass">Forgot password?</p>
+        <a href="index.html"><button type="submit" class="submit" name="login">Log In</button></a>
+        <button type="button" class="fb-btn" onclick="myFunction()">Connect with <span>facebook</span></button>
+      </div>
+  </form>
+
+      <div class="sub-cont">
+        <div class="img">
+          <div class="img__text m--up">
+            <h2>New here?</h2>
+            <p>Sign up and start the adventures!</p>
+          </div>
+
+          <div class="img__text m--in">
+            <h2>One of us?</h2>
+            <p>Lets continue the adventures!</p>
+          </div>
+
+          <div class="img__btn">
+            <span class="m--up">Sign Up</span>
+            <span class="m--in">Log In</span>
+          </div>
+        </div>
+
+        <form method="post" action="">
+          <div class="form sign-up">
+            <h2>Welcome</h2>
+            <label>
+              <span>Username</span>
+              <input type="text" name="username">
+            </label>
+
+            <label>
+              <span>Name</span>
+              <input type="text" name="name">
+            </label>
+
+            <label>
+              <span>Email</span>
+              <input type="email" name="email">
+            </label>
+
+            <label>
+              <span>Password</span>
+              <input type="password" name="password">
+            </label>
+
+            <a href="index.html"><button type="submit" class="submit" name="register">Sign Up</button></a>
+            <button type="button" class="fb-btn" onclick="myFunction()">Connect with <span>facebook</span></button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  <a href="https://www.youtube.com" target="_blank" class="icon-link"><img src="login/youtube.png"></a>
+  <a href="https://www.google.com" target="_blank" class="icon-link icon-link--twitter"><img src="login/google.png"></a>
+  <footer class="text_2">Copyright&copy 2023 NG-UTANG</footer>
+  <script src="login/script.js"></script> 
+</body>
+</html>

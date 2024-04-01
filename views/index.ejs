@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -25,13 +25,29 @@
                 <source src="assets/bgm.mp3" type="audio/mpeg">
                 Your browser does not support the audio element.
             </audio>
-
             <button id="home">
                 <a href="/">
                     <img id="logo1" src="assets/logo1.png" alt="Home">
                 </a>
             </button>
-            <a href="/auth"><button id="login_btn">Login</button></a>
+            <% if (user) { %>
+                <!-- If user is logged in, display username instead of login button -->
+                <button id="login_btn">
+                    <%= user.username %>
+                </button>
+            <% } else { %>
+                <!-- If user is not logged in, display Guest -->
+                <button id="login_btn">
+                    Guest
+                </button>
+            <% } %>
+            <% if (user) { %>
+                <!-- If user is logged in, display username instead of login button -->
+                <a href="/logout"><button id="login_btn">logout</button></a>
+            <% } else { %>
+                <!-- If user is not logged in, display login button -->
+                <a href="/auth"><button id="login_btn">Login</button></a>
+            <% } %>
             <button id="favourite_btn">My Favourites</button>
         </nav>
 
@@ -39,7 +55,7 @@
         <div id="content">
             <header id="header">
                 <h1 id="h1">Find Recipes For You</h1>
-                <input id="search_box" type="search" placeholder="🔍 Search here.. ">
+                <input id="search_box" type="search" placeholder="&#128269; Search here.. ">
                 <h3 id="h3" style="display: none;">Your Search Results:</h3>
                 <!-- Add a loading icon -->
                 <div id="loading" style="display: none; text-align: center; z-index: 999;">

@@ -95,14 +95,14 @@ function dragElement(elmnt) {
 }
 </script>
 
-  <form method="post" action="">
+  <form method="post" action="/login">
     <div class="cont"> 
       <div class="form sign-in">
         <h2>Welcome Back</h2>
 
         <label>
           <span>Username or Email</span>
-          <input type="text" name="username">
+          <input type="text" name="emailOrUsername"> <!-- Change name to emailOrUsername -->
         </label>
 
         <label>
@@ -111,8 +111,8 @@ function dragElement(elmnt) {
         </label>
 
         <p class="forgot-pass">Forgot password?</p>
-        <a href="/"><button type="submit" class="submit" name="login">Log In</button></a>
-        <button type="button" class="fb-btn" onclick="myFunction()">Connect with <span>facebook</span></button>
+        <button type="submit" class="submit" name="login">Log In</button> <!-- Remove <a> wrapper -->
+        <button type="button" class="fb-btn" onclick="WIPFunction()">Connect with <span>facebook</span></button>
       </div>
   </form>
 
@@ -134,7 +134,7 @@ function dragElement(elmnt) {
           </div>
         </div>
 
-        <form method="post" action="">
+        <form method="post" action="/register"> <!-- Update the action to "/register" -->
           <div class="form sign-up">
             <h2>Welcome</h2>
             <label>
@@ -157,8 +157,8 @@ function dragElement(elmnt) {
               <input type="password" name="password">
             </label>
 
-            <a href="/"><button type="submit" class="submit" name="register">Sign Up</button></a>
-            <button type="button" class="fb-btn" onclick="myFunction()">Connect with <span>facebook</span></button>
+            <button type="submit" class="submit" name="register">Sign Up</button> <!-- Remove <a> wrapper -->
+            <button type="button" class="fb-btn" onclick="WIPFunction()">Connect with <span>facebook</span></button>
           </div>
         </form>
       </div>
@@ -166,7 +166,6 @@ function dragElement(elmnt) {
 
   <a href="https://www.youtube.com" target="_blank" class="icon-link"><img src="login/youtube.png"></a>
   <a href="https://www.google.com" target="_blank" class="icon-link icon-link--twitter"><img src="login/google.png"></a>
-  <footer class="text_2">Copyright&copy 2023 NG-UTANG</footer>
   <script src="login/script.js"></script> 
 </body>
 </html>

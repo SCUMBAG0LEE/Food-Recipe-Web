@@ -166,7 +166,7 @@ function Recipe_container(event) {
         view++;
         // kemudian menyembunyikan elemen utama, menyiapkan struktur HTML untuk detail resep
         // dan menambahkannya ke elemen kontainer.
-        main.style.visibility = "hidden"; 
+        main.style.visibility = "hidden";
         // filter_array memiliki 1 objek yang idMeal-nya cocok dengan id tombol target
         let filter_array = object_array.meals.filter(function (object) {
             return object.idMeal === event.target.id;
@@ -339,7 +339,7 @@ function remove_from_fav(event) {
     // mengambil atau menemukan elemen hati berdasarkan id mereka
     let heart_id = event.target.id.slice(0, -1) + 1; // menghasilkan ID elemen ikon hati
     let element = document.getElementById(heart_id);
-    
+
     // kondisi ini memeriksa apakah elemen ikon hati ada dalam DOM.
     if (element !== null) {
         element.style.color = "black";

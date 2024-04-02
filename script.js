@@ -351,3 +351,17 @@ window.addEventListener('load', (event) => {
     let audioPlayer = document.getElementById("audio-player");
     audioPlayer.volume = 0.2;
 });
+
+// Window scroll between search box and main content
+window.addEventListener('scroll', (event) => {
+    var header = document.getElementById("header");
+    var mainContent = document.getElementById("main-content")
+    if(this.window.scrollY > 0){
+        header.style.transform = 'translateY(-' + this.window.scrollY + 'px)';
+        mainContent.style.marginTop = header.offsetHeight + 'px';
+    }
+    else {
+        header.style.transform = 'none';
+        mainContent.style.marginTop = '50px';
+    }
+});

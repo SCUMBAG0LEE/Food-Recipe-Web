@@ -549,6 +549,11 @@ body {
     /* home page */
     #header {
         width: 100vw;
+        padding: 10px;
+        position: fixed;
+        width: 100%;
+        top : 0;
+        z-index: 1000;
     }
 
     /* main section food card*/
@@ -556,6 +561,15 @@ body {
         width: 100vw;
         margin-left: 0px;
         justify-content: center;
+        position: relative;
+        margin-top: 50px;
+        padding: 20px;
+    }
+
+    /* main section food card RWD */
+    #main-content{
+        margin-top: 50px;
+        padding: 20px;
     }
 
     /* Recipe_card Section*/

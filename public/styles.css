@@ -125,23 +125,23 @@ body {
 /* background image carousel */
 @keyframes carousel {
     0% {
-        background-image: url(assets/genshinfood1.jpg);
+        background-image: url(assets/cooking1.jpg);
     }
 
     25% {
-        background-image: url(assets/genshinfood2.jpg);
+        background-image: url(assets/cooking2.jpg);
     }
 
     50% {
-        background-image: url(assets/genshinfood3.jpg);
+        background-image: url(assets/cooking3.jpg);
     }
 
     75% {
-        background-image: url(assets/genshinfood4.jpg);
+        background-image: url(assets/cooking4.jpg)
     }
 
     100% {
-        background-image: url(assets/genshinfood1.jpg);
+        background-image: url(assets/cooking5.jpg);
     }
 }
 
@@ -219,8 +219,15 @@ body {
     margin-left: 34px;
     display: flex;
     flex-wrap: wrap;
-    overflow-y: scroll;
 }
+
+#stuff-layer {
+    overflow: scroll;
+}
+
+/* #header-layer{
+    overflow: scroll;
+} */
 
 /* fetch recipes card css property */
 .food_card {

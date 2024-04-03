@@ -1,0 +1,16 @@
+*note : Type (clear) after you finish 1 task point
+
+
+TO DO LIST
+1. Adding more CRUD operations to the application.
+for the reference, we can use royco.co.id
+
+2. Re-designing the main page
+for the reference, we can use || bango.co.id || royco.co.id || cookpad.com ||
+
+3. Adding login option
+User can login with Google Account too (Google Auth)
+
+4. Re-designing the Login page
+
+

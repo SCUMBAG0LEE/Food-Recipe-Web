@@ -173,24 +173,40 @@ function Recipe_container(event) {
         });
 
         let Recipe_div = document.createElement("div");
-        Recipe_div.classList.add("Recipe_card");
-        Recipe_div.innerHTML = `    
-        <div id="left">
-            <div id="left_upper">
-                <img id="left_upper_img"src="${filter_array[0].strMealThumb}" alt="error">
-                <p id="left_upper_p1">${filter_array[0].strMeal}</p>  
-                <p id="left_upper_p2">Cuisine : ${filter_array[0].strArea}</p>
-            </div>
-            <div id="left_lower">
-                <a href="${filter_array[0].strYoutube}" target="_blank"><button id="left_lower_btn">Watch Video</button></a>
-            </div>
+Recipe_div.classList.add("Recipe_card");
+Recipe_div.innerHTML = `    
+    <div id="left">
+        <div id="left_upper">
+            <img id="left_upper_img"src="${filter_array[0].strMealThumb}" alt="error">
+            <p id="left_upper_p1">${filter_array[0].strMeal}</p>  
+            <p id="left_upper_p2">Cuisine: ${filter_array[0].strArea}</p>
         </div>
+        <div id="left_lower">
+            <a href="${filter_array[0].strYoutube}" target="_blank"><button id="left_lower_btn">Watch Video</button></a>
+        </div>
+    </div>
 
-        <div id="right">
-            <span id="${(event.target.id)}5" class="cross material-symbols-outlined">cancel</span>
-            <h3 id="right_inst">INSTRUCTION</h3>
-            <p id="right_p">${filter_array[0].strInstructions}</p>
-        </div>`;
+    <div id="right">
+        <span id="${(event.target.id)}5" class="cross material-symbols-outlined">cancel</span>
+        <h3 id="right_ingr">INGREDIENTS</h3>
+        <ul id="right_ingr_list">
+            ${createIngredientsList(filter_array[0])}
+        </ul>
+        <h3 id="right_inst">INSTRUCTION</h3>
+        <p id="right_p">${filter_array[0].strInstructions}</p>
+    </div>`;
+
+function createIngredientsList(meal) {
+    let ingredientsList = "";
+    for (let i = 1; i <= 20; i++) {
+        let ingredient = meal[`strIngredient${i}`];
+        let measurement = meal[`strMeasure${i}`];
+        if (ingredient && measurement) {
+            ingredientsList += `<li>${measurement} ${ingredient}</li>`;
+        }
+    }
+    return ingredientsList;
+}
 
         container.append(Recipe_div);
         //menambahkan event listener klik ke ikon silang

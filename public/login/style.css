@@ -24,8 +24,8 @@ input, button {
 .cont {
   overflow: hidden;
   position: absolute;
-  top: 15%;
-  left: 20%;
+  top: 10vw;
+  left: 50vh;
   width: 900px;
   height: 550px;
   margin: 0 auto 100px;
@@ -89,7 +89,7 @@ button {
   top: 0;
   width: 900px;
   height: 100%;
-  background-image: url("bg.jpg");
+  background-image: url("loginimage.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
@@ -322,7 +322,8 @@ input {
   top: 0;
   bottom: 0;
   position: absolute;
-background: linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
+/* background: linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3); */
+background-color: #FEFBF6;
 background-size: 1800% 1800%;
 
 -webkit-animation: rainbow 18s ease infinite;

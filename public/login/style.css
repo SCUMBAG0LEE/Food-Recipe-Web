@@ -23,7 +23,7 @@ input, button {
 
 .cont {
   overflow: hidden;
-  position: absolute;
+  position: relative;
   top: 10vw;
   left: 50vh;
   width: 900px;

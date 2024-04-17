@@ -4,6 +4,7 @@ const session = require('express-session');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const { error } = require('console');
 const app = express();
 
 // Set EJS as the view engine
@@ -49,6 +50,13 @@ const User = mongoose.model('User', userSchema);
 // Body parser middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Hashing user Password
+const hashPassword = async (password) => {
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    return hashedPassword;
+};
+
 // Registration route
 app.post('/register', async (req, res) => {
     const { email, password, username, name } = req.body;
@@ -65,6 +73,9 @@ app.post('/register', async (req, res) => {
     `);
     }
 
+    //retrieve user password and hash that password
+    const hashedPassword = hashPassword(password);
+
     try {
         // Check if user already exists
         const existingUser = await User.findOne({ $or: [{ email }, { username }] });
@@ -80,7 +91,10 @@ app.post('/register', async (req, res) => {
         }
 
         // Create new user
-        const newUser = new User({ email, password, username, name });
+        const newUser = new User({ email, 
+                                password: hashedPassword, // gonna store the password in the database
+                                username, 
+                                name });
         await newUser.save();
         res.send(`
         <script src="login/script.js"></script>
@@ -131,6 +145,21 @@ app.post('/login', async (req, res) => {
     `);
         }
 
+        //Verify old password
+        const isMatch = await bcrypt.compare(oldPassword, user.password);
+
+        if (!isMatch) {
+            return res.status(401).json({error: 'Invalid password'});
+        }
+
+        // Hash the password
+        const hashedPassword = await hashPassword(newPassword);
+
+        //Update user password
+        user.password = hashNewPassword;
+        await user.save();
+        res.json({message: 'Password changed successfully'});
+
         // Store user information in session
         req.session.user = user;
 
@@ -149,6 +178,7 @@ app.post('/login', async (req, res) => {
         </script>
     `);
     } catch (error) {
+        res.status(500).json({error: 'Failed to change your password'})
         console.error('Error logging in:', error);
         //res.send('An error occurred while logging in');
         res.send(`

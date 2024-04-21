@@ -21,11 +21,11 @@ input, button {
   text-align: center;
 }
 
-.cont {
+.cont { /* login form always placed in the middle of screen */
   overflow: hidden;
-  position: relative;
-  top: 10vw;
-  left: 50vh;
+  position: relative; /* use Relative so the position will be set depends on user device monitor */
+  top: 0vh; /* position top-bottom */
+  left: 0vw; /* position left-right */
   width: 900px;
   height: 550px;
   margin: 0 auto 100px;
@@ -33,7 +33,7 @@ input, button {
 }
 
 .form {
-  position: relative;
+  position: absolute;
   width: 640px;
   height: 100%;
   transition: -webkit-transform 1.2s ease-in-out;

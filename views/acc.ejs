@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account</title>
+    <link rel="stylesheet" href="account/style.css">
+</head>
+<body>
+    <div id="container">
+        <nav id="nav-menu">
+            <img id="logo" src="assets/logo.png" alt="logo failed to load">
+            <h2 id="text">Wanmin Kitchen</h2>
+            <audio controls loop id="audio-player">
+                <source src="assets/bgm.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <button id="home">
+                <a href="/">
+                    <img id="logo1" src="assets/home.png" alt="Home">
+                </a>
+            </button>
+            <% if (user) { %>
+                <!-- If user is logged in, display username button -->
+                <a href="/acc"><button id="login_btn"><%= user.username %></button></a>
+                <!-- Display logout button -->
+                <a href="/logout"><button id="login_btn">logout</button></a>
+            <% } else { %>
+                <!-- If user is not logged in, display login button -->
+                <a href="/auth"><button id="login_btn">Login</button></a>
+            <% } %>
+            <button id="favourite_btn">My Favourites</button>
+        </nav>
+
+        <div id="content">
+            <div class="card-container">
+                <div class="card">
+                    <div id="account-container">
+                        <h1>Update Account</h1>
+                        <!-- Check if user exists before accessing username, name, and email -->
+                        <% if (user) { %>
+                            <form id="account-form" action="/update" method="POST">
+                                <label for="name">Username</label>
+                                <input type="text" id="username" name="username" placeholder="New Username" required>
+                                                            
+                                <label for="username">Name</label>
+                                <input type="text" id="name" name="name" placeholder="New Name" required>
+                                                            
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" placeholder="New Email" required>
+                                                            
+                                <label for="password">Password</label>
+                                <input type="password" id="password" name="password" placeholder="Enter new password" required>
+                                                            
+                                <button type="submit">Update</button>
+                            </form>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    // Assume this function is called upon successful update
+        function UpdateSuccess() {
+            alert("Account updated successfully");
+            // Redirect to the account page or any other page as needed
+            window.location.href = '/acc';
+        }</script>
+    
+</body>
+</html>

@@ -50,13 +50,23 @@ const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true }
+    password: { type: String, required: true },
+    isAdmin: { type: Boolean, required: false } //Adding isAdmin verificator
 });
 
 const User = mongoose.model('User', userSchema);
 
 // Body parser middleware
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Middleware to check if user login with Admin account
+const isAdmin = (req, res, next) => { 
+    if(req.session.user && req.session.user.isAdmin) {
+        next();
+    } else {
+        res.status(403).send('You are not Admin')
+    }
+};
 
 // Registration route
 app.post('/register', async (req, res) => {
@@ -155,6 +165,23 @@ app.post('/login', async (req, res) => {
             LoginNo();
         </script>
     `);
+    }
+});
+
+// Route for adding recipes (accessible only to admin users)
+app.post('/add-recipe', isAdmin, async (req, res) => {
+    // Logic to add a recipe to the database
+    // This route will only be accessible to admin users
+});
+
+// Main page route
+app.get('/main', (req, res) => {
+    const user = req.session.user;
+    // Render main page with recipes if the user is an admin
+    if (user && user.isAdmin) {
+        // Logic to fetch and render recipes from the database
+    } else {
+        // Logic to render main page without recipes
     }
 });
 

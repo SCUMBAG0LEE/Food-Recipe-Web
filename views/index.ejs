@@ -21,7 +21,7 @@
         <nav id="nav-menu">
             <img id="logo" src="assets/logo.png" alt="logo failed to load">
             <h2 id="text">Wanmin Kitchen</h2>
-            <audio controls autoplay loop id="audio-player">
+            <audio controls loop id="audio-player">
                 <source src="assets/bgm.mp3" type="audio/mpeg">
                 Your browser does not support the audio element.
             </audio>
@@ -31,15 +31,11 @@
                 </a>
             </button>
             <% if (user) { %>
-                <!-- If user is logged in, display username instead of login button -->
-                <button id="login_btn">
-                    <%= user.username %>
-                </button>
+                <!-- If user is logged in, display username button -->
+                <a href="/acc"><button id="login_btn"><%= user.username %></button></a>
             <% } else { %>
-                <!-- If user is not logged in, display Guest -->
-                <button id="login_btn">
-                    Guest
-                </button>
+                <!-- If user is not logged in, display login button -->
+                <a href="/auth"><button id="login_btn">Guest</button></a>
             <% } %>
             <% if (user) { %>
                 <!-- If user is logged in, display username instead of login button -->
@@ -79,9 +75,6 @@
             <!-- <h2>No recipes added in your favourites list.</h2> -->
         </div>
     </div>
-
-    <!-- Include EJS module -->
-    <script src="app.js"></script>
 
     <!-- Include your JavaScript file -->
     <script src="script.js"></script>

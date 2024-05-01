@@ -45,4 +45,3 @@ function Login2() {
     alert("Logout First Before Trying To Authenticate Again");
     window.location.href = '/';
 }
-

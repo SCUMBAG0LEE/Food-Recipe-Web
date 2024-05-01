@@ -4,8 +4,16 @@ const session = require('express-session');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const { error } = require('console');
+const crypto = require('crypto');
 const app = express();
+const multer = require('multer');
+
+// Import the hashString function
+function hashString(input) {
+  const hash = crypto.createHash('sha256');
+  hash.update(input);
+  return hash.digest('hex');
+}
 
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
@@ -50,66 +58,49 @@ const User = mongoose.model('User', userSchema);
 // Body parser middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Hashing user Password
-const hashPassword = async (password) => {
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-    return hashedPassword;
-};
-
 // Registration route
 app.post('/register', async (req, res) => {
     const { email, password, username, name } = req.body;
 
     // Check for empty fields
     if (!email || !password || !username || !name) {
-        //return res.send('All fields are required');
         return res.send(`
         <script src="login/script.js"></script>
         <script>
-            // Call the function defined in script.js
             FieldAlert();
         </script>
     `);
     }
 
-    //retrieve user password and hash that password
-    const hashedPassword = hashPassword(password);
-
     try {
         // Check if user already exists
         const existingUser = await User.findOne({ $or: [{ email }, { username }] });
         if (existingUser) {
-            //return res.send('User already exists');
             return res.send(`
         <script src="login/script.js"></script>
         <script>
-            // Call the function defined in script.js
             Register1();
         </script>
     `);
         }
 
-        // Create new user
-        const newUser = new User({ email, 
-                                password: hashedPassword, // gonna store the password in the database
-                                username, 
-                                name });
+        // Hash the password
+        const hashedPassword = hashString(password);
+
+        // Create new user with hashed password
+        const newUser = new User({ email, password: hashedPassword, username, name });
         await newUser.save();
         res.send(`
         <script src="login/script.js"></script>
         <script>
-            // Call the function defined in script.js
             RegisterYes();
         </script>
     `);
     } catch (error) {
         console.error('Error registering user:', error);
-        //res.send('An error occurred while registering');
         res.send(`
         <script src="login/script.js"></script>
         <script>
-            // Call the function defined in script.js
             RegisterNo();
         </script>
     `);
@@ -121,11 +112,9 @@ app.post('/login', async (req, res) => {
     const { emailOrUsername, password } = req.body;
 
     if (!emailOrUsername || !password) {
-        //return res.send('All fields are required');
         return res.send(`
         <script src="login/script.js"></script>
         <script>
-            // Call the function defined in script.js
             FieldAlert();
         </script>
     `);
@@ -134,57 +123,35 @@ app.post('/login', async (req, res) => {
     try {
         // Find user by email or username
         const user = await User.findOne({ $or: [{ email: emailOrUsername }, { username: emailOrUsername }] });
-        if (!user || user.password !== password) {
-            //return res.send('Invalid email/username or password');
+        if (!user || user.password !== hashString(password)) {
             return res.send(`
         <script src="login/script.js"></script>
         <script>
-            // Call the function defined in script.js
             Login1();
         </script>
     `);
         }
 
-        //Verify old password
-        const isMatch = await bcrypt.compare(oldPassword, user.password);
-
-        if (!isMatch) {
-            return res.status(401).json({error: 'Invalid password'});
-        }
-
-        // Hash the password
-        const hashedPassword = await hashPassword(newPassword);
-
-        //Update user password
-        user.password = hashNewPassword;
-        await user.save();
-        res.json({message: 'Password changed successfully'});
-
         // Store user information in session
         req.session.user = user;
 
         // Generate token
-        const token = jwt.sign({ userId: user._id }, 'FUCKINGSHIT', { expiresIn: '1h' });
+        const token = jwt.sign({ userId: user._id }, 'Stuff', { expiresIn: '1h' });
 
         // Set token as cookie
         res.cookie('token', token, { httpOnly: true });
 
-        // Redirect to homepage after successful login
         res.send(`
         <script src="login/script.js"></script>
         <script>
-            // Call the function defined in script.js
             LoginYes();
         </script>
     `);
     } catch (error) {
-        res.status(500).json({error: 'Failed to change your password'})
         console.error('Error logging in:', error);
-        //res.send('An error occurred while logging in');
         res.send(`
         <script src="login/script.js"></script>
         <script>
-            // Call the function defined in script.js
             LoginNo();
         </script>
     `);
@@ -200,12 +167,9 @@ app.get('/', (req, res) => {
 // Define a route to render the login page
 app.get('/auth', (req, res) => {
     if (req.session.user) {
-        // If user is already logged in, redirect to homepage or any other page
-        //return res.redirect('/');
         return res.send(`
         <script src="login/script.js"></script>
         <script>
-            // Call the function defined in script.js
             Login2();
         </script>
     `);
@@ -220,9 +184,63 @@ app.get('/logout', (req, res) => {
     res.redirect('/');
 });
 
+//Route to render account page
+app.get('/acc', (req, res) => {
+    const user = req.session.user;
+    if (!user) {
+        return res.redirect('/auth');
+    }
+    res.render('acc', {user: user});
+})
+
+
+// Route to handle account updates
+app.post('/update', async (req, res) => {
+    // Retrieve the current user's ID from the session cookie
+    const userId = req.session.user._id;
+    const { username, name, email, password } = req.body; // Include 'username' here
+
+    // Validate that all required fields are provided
+    if (!userId || !username || !name || !email || !password) {
+        console.log('All fields are required'); // Log this message
+        return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    try {
+        // Find the user by their ID
+        const existingUser = await User.findById(userId);
+
+        if (!existingUser) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Hash the new password
+        const hashedPassword = hashString(password);
+
+        // Update the user's information
+        existingUser.username = username;
+        existingUser.name = name;
+        existingUser.email = email;
+        existingUser.password = hashedPassword;
+        await existingUser.save();
+
+        // Send a success response
+        res.send(`
+        <script src="script.js"></script>
+        <script>
+        UpdateSuccess();
+        </script>
+    `);
+    } catch (error) {
+        console.error('Error updating account:', error);
+        // Send an error response
+        res.status(500).json({ error: 'Failed to update account' });
+    }
+});
+
+
 // Start the server
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`Server is running on port ${port}, http://localhost:${port}`);
 });
-

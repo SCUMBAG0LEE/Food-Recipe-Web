@@ -19,7 +19,9 @@
     <div id="container">
         <!-- NavBar -->
         <nav id="nav-menu">
-            <img id="logo" src="assets/logo.png" alt="logo failed to load">
+            <a id="logo_button" href="<%= user && user.role === 'admin' ? '/admin-dashboard' : '/' %>">
+                <img id="logo" src="assets/logo.png" alt="logo failed to load">
+            </a>
             <h2 id="text">Wanmin Kitchen</h2>
             <audio controls loop id="audio-player">
                 <source src="assets/bgm.mp3" type="audio/mpeg">

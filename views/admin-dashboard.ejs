@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="admin/style.css">
+    <link rel="icon" type="image/png" href="assets/menu.png">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-ABCDEF..." crossorigin="anonymous" />
+</head>
+
+<body>
+    <div id="container">
+        <nav id="nav-menu">
+            <img id="logo" src="assets/logo.png" alt="logo failed to load">
+            <h2 id="text">Wanmin Kitchen</h2>
+            <audio controls loop id="audio-player">
+                <source src="assets/bgm.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <button id="home">
+                <a href="/">
+                    <img id="logo1" src="assets/home.png" alt="Home">
+                </a>
+            </button>
+            <% if (user) { %>
+                <!-- If user is logged in, display username button -->
+                <a href="/acc"><button id="login_btn"><%= user.username %></button></a>
+                <!-- Display logout button -->
+                <a href="/logout"><button id="login_btn">logout</button></a>
+            <% } else { %>
+                <!-- If user is not logged in, display login button -->
+                <a href="/auth"><button id="login_btn">Login</button></a>
+            <% } %>
+        </nav>
+
+        <!-- Content -->
+        <div id="content">
+            <div id="admin-dashboard">
+                <div class="container">
+                    <h2>User List</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th>Username</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% users.forEach(user => { %>
+                            <tr>
+                                <td><%= user._id %></td>
+                                <td><%= user.username %></td>
+                                <td><%= user.name %></td>
+                                <td><%= user.email %></td>
+                                <td><%= user.role %></td>
+                                <td>
+                                    <form id="deleteForm_<%= user._id %>" action="/admin-dashboard/delete/<%= user._id %>" method="POST">
+                                        <button type="button" onclick="deleteUser('<%= user._id %>')">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--JavaScript file -->
+    <script src="admin/script.js"></script>
+</body>
+
+</html>

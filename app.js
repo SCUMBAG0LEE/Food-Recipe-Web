@@ -51,22 +51,13 @@ const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    isAdmin: { type: Boolean, required: false } //Adding isAdmin verificator
+    role: { type: String, default: 'user' }
 });
 
 const User = mongoose.model('User', userSchema);
 
 // Body parser middleware
 app.use(bodyParser.urlencoded({ extended: true }));
-
-// Middleware to check if user login with Admin account
-const isAdmin = (req, res, next) => { 
-    if(req.session.user && req.session.user.isAdmin) {
-        next();
-    } else {
-        res.status(403).send('You are not Admin')
-    }
-};
 
 // Registration route
 app.post('/register', async (req, res) => {
@@ -97,8 +88,8 @@ app.post('/register', async (req, res) => {
         // Hash the password
         const hashedPassword = hashString(password);
 
-        // Create new user with hashed password
-        const newUser = new User({ email, password: hashedPassword, username, name });
+        // Create new user with hashed password and assign role
+        const newUser = new User({ email, password: hashedPassword, username, name, role: 'user' });
         await newUser.save();
         res.send(`
         <script src="login/script.js"></script>
@@ -168,6 +159,14 @@ app.post('/login', async (req, res) => {
     }
 });
 
+// Define a route to render the index page
+app.get('/', (req, res) => {
+    const user = req.session.user;
+    res.render('index', { user: user });
+});
+
+
+//STEVAN
 // Route for adding recipes (accessible only to admin users)
 app.post('/add-recipe', isAdmin, async (req, res) => {
     // Logic to add a recipe to the database
@@ -183,12 +182,6 @@ app.get('/main', (req, res) => {
     } else {
         // Logic to render main page without recipes
     }
-});
-
-// Define a route to render the index page
-app.get('/', (req, res) => {
-    const user = req.session.user;
-    res.render('index', { user: user });
 });
 
 // Define a route to render the login page
@@ -253,7 +246,7 @@ app.post('/update', async (req, res) => {
 
         // Send a success response
         res.send(`
-        <script src="script.js"></script>
+        <script src="account/script.js"></script>
         <script>
         UpdateSuccess();
         </script>
@@ -262,6 +255,53 @@ app.post('/update', async (req, res) => {
         console.error('Error updating account:', error);
         // Send an error response
         res.status(500).json({ error: 'Failed to update account' });
+    }
+});
+
+// Middleware to check if user is admin
+function isAdmin(req, res, next) {
+    const user = req.session.user;
+    if (!user || user.role !== 'admin') {
+        // If user is not admin, send a message
+        return res.send(`
+            <script>alert("You have to be an admin to open this");
+            window.location.href = '/';
+            }, 1000);
+            </script>
+        `);
+    }
+    // If user is admin, continue to the next middleware
+    next();
+}
+
+// Route to render the admin-dashboard page
+app.get('/admin-dashboard', isAdmin, async (req, res) => {
+    try {
+        // Fetch all users from the database except the admin user
+        const users = await User.find({ role: { $ne: 'admin' } }, '-password'); // Exclude password field from the result
+
+        // Pass the user variable to the admin-dashboard view
+        const user = req.session.user || null;
+
+        // Render the admin-dashboard view with the user data
+        res.render('admin-dashboard', { user: user, users: users });
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+
+// Route to handle deletion of a user
+app.post('/admin-dashboard/delete/:userId', async (req, res) => {
+    const userId = req.params.userId;
+
+    try {
+        // Find user by ID and delete from database
+        await User.findByIdAndDelete(userId);
+        res.status(200).json({ message: 'User deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        res.status(500).json({ message: 'Failed to delete user' });
     }
 });
 

@@ -1,2 +1,9 @@
-# Food-Recipe-Web
-Simple Web Used For Searching Recipe Online.
+# WANMIN KITCHEN
+Fresh idea, fresh food everyday!
+
+A website project that inspired from cookpad.com , royco.co.id , bango.co.id
+
+Kelompok 13
+Stevan Lukas S. (535220053)
+William Gunawan (535220092)
+Milson Feliciano (535220093)

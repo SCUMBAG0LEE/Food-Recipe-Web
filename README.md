@@ -1,6 +1,6 @@
-# WANMIN KITCHEN
-Fresh idea, fresh food everyday!
+# WANMIN KITCHEN || Fresh idea, fresh food everyday!
 
+# About this project
 A website project that inspired from cookpad.com , royco.co.id , bango.co.id
 
 Kelompok 13
